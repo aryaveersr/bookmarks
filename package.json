@@ -1,0 +1,11 @@
+{
+  "name": "bookmarks",
+  "private": true,
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "scripts": {
+    "dev": "bun src/index.html",
+    "build": "bun build src/index.html --outdir=dist"
+  }
+}
