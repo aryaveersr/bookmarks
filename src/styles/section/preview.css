@@ -1,0 +1,40 @@
+.panel-preview,
+.preview-controls {
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-controls > div {
+  padding: 1rem 1rem 0px 1rem;
+
+  display: flex;
+  flex-direction: row;
+
+  gap: 1rem;
+}
+
+.preview-controls input[type="text"] {
+  flex-grow: 1;
+}
+
+.preview-control-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.preview-iframe-container {
+  flex-grow: 1;
+  width: 100%;
+
+  display: flex;
+
+  padding: 1rem;
+}
+
+iframe {
+  flex-grow: 1;
+  width: 100%;
+
+  border-radius: 4px;
+}

@@ -1,0 +1,80 @@
+.file-input {
+  display: none;
+}
+
+.file-input-label {
+  display: inline-block;
+  width: 100%;
+}
+
+button,
+.file-input-label {
+  cursor: pointer;
+  text-align: center;
+  padding: 8px 16px;
+
+  border: 1px solid var(--gray-50);
+  background-color: var(--gray-50);
+  border-radius: 4px;
+
+  color: black;
+
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out,
+    color 0.2s ease-in-out;
+}
+
+button:hover,
+.file-input-label:hover {
+  background-color: var(--gray-200);
+  border-color: var(--gray-200);
+}
+
+button.small {
+  padding: 4px 8px;
+}
+
+/** Outlined button */
+
+button.outline {
+  border-color: var(--gray-800);
+  background-color: transparent;
+
+  color: white;
+}
+
+button.outline:hover {
+  border-color: var(--gray-600);
+  background-color: var(--gray-800);
+}
+
+/** Text button */
+
+button.text {
+  border-color: transparent;
+  background-color: transparent;
+
+  color: var(--gray-300);
+}
+
+button.text:hover {
+  background-color: var(--gray-800);
+  border-color: var(--gray-800);
+
+  color: white;
+}
+
+/** Danger button */
+
+button.danger {
+  border-color: transparent;
+  background-color: transparent;
+
+  color: var(--red-500);
+}
+
+button.danger:hover {
+  background-color: var(--red-500);
+  border-color: var(--red-500);
+
+  color: white;
+}

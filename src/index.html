@@ -3,10 +3,109 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/main.css" />
 
     <title>Bookmarks</title>
   </head>
   <body>
-    <script src="main.ts"></script>
+    <section class="section-start">
+      <div>
+        <h2>Bookmarks</h2>
+
+        <input type="file" class="file-input" id="start-input-file" />
+        <label class="file-input-label" for="start-input-file">
+          Import bookmarks from HTML
+        </label>
+
+        <button class="outline" id="start-btn-skip">
+          Skip to the editor ➤
+        </button>
+      </div>
+    </section>
+
+    <header>
+      <menu></menu>
+      <button class="text small">Settings</button>
+    </header>
+
+    <main>
+      <section class="panel panel-input">
+        <div>
+          <input type="file" class="file-input" id="input-input-file" />
+          <label class="file-input-label" for="input-input-file">
+            Import bookmarks from HTML
+          </label>
+        </div>
+
+        <menu class="entry-group-menu" id="input-entry-menu"></menu>
+      </section>
+
+      <section class="panel panel-preview">
+        <div class="preview-controls">
+          <div>
+            <input
+              type="text"
+              placeholder="Bookmark title"
+              id="preview-input-title"
+            />
+            <button class="text" id="preview-btn-update-title">
+              Update title
+            </button>
+          </div>
+          <div>
+            <input
+              type="text"
+              placeholder="Bookmark URL"
+              id="preview-input-url"
+            />
+            <button class="text" id="preview-btn-update-url">Update URL</button>
+          </div>
+          <div class="preview-control-buttons">
+            <div>
+              <button class="text" id="preview-btn-reload">Reload</button>
+              <button class="text" id="preview-btn-new-tab">
+                Open in new tab
+              </button>
+            </div>
+            <div>
+              <button class="danger" id="preview-btn-delete">Delete</button>
+              <button id="preview-btn-keep">Keep</button>
+            </div>
+          </div>
+        </div>
+        <div class="preview-iframe-container">
+          <iframe id="preview-iframe" frameborder="0"></iframe>
+        </div>
+      </section>
+
+      <section class="panel panel-output">
+        <button id="output-btn-export">Export as HTML</button>
+        <menu class="entry-group-menu" id="output-entry-menu"></menu>
+      </section>
+    </main>
+
+    <template id="template-bookmark-entry">
+      <li class="entry-bookmark">
+        <button>
+          <img alt="" slot="icon" width="28px" height="28px" />
+
+          <div>
+            <span slot="title"></span>
+            <span slot="url"></span>
+          </div>
+        </button>
+      </li>
+    </template>
+
+    <template id="template-group-entry">
+      <li class="entry-group">
+        <details>
+          <summary slot="title"></summary>
+          <menu slot="children" class="entry-group-menu"></menu>
+        </details>
+      </li>
+    </template>
+
+    <script src="scripts/app.ts"></script>
   </body>
 </html>

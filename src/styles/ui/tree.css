@@ -1,0 +1,65 @@
+.entry-group-menu {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+
+  padding: 0px;
+  gap: 0.5rem;
+}
+
+.entry-bookmark button {
+  width: 100%;
+  cursor: pointer;
+
+  background-color: var(--gray-950);
+  border: 1px solid var(--gray-900);
+  border-radius: 4px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  color: white;
+  padding: 8px;
+  gap: 1rem;
+
+  transition: all 0.2s ease-in-out;
+}
+
+.entry-bookmark button:hover {
+  background-color: var(--gray-900);
+  border-color: var(--gray-800);
+}
+
+.entry-bookmark[data-active="true"] button {
+  border-color: var(--gray-400);
+}
+
+.entry-bookmark div {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.entry-bookmark span {
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.entry-bookmark span:last-child {
+  color: var(--gray-300);
+}
+
+.entry-bookmark img {
+  width: 28px;
+  height: 28px;
+
+  border: 1px solid var(--gray-900);
+  border-radius: 99999rem;
+  outline: 0px;
+
+  transition: border-color 0.2s ease-in-out;
+}
