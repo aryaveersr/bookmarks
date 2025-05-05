@@ -53,16 +53,18 @@ export function exportBookmarks(): void {
       if (item.kind === "bookmark") {
         const entry = item as BookmarkEntry;
 
-        output += `<DT><A HREF="${entry.url}" ADD_DATE="0" \
-        ${entry.iconUrl ? `ICON_URI="${entry.iconUrl}"` : ""}\
-        ${entry.iconBlob ? `ICON="${entry.iconBlob}"` : ""}> \
-        ${entry.title}</A></DT>\n`;
+        output +=
+          `<DT><A HREF="${entry.url}" ADD_DATE="0" ` +
+          `${entry.iconUrl ? `ICON_URI="${entry.iconUrl}"` : ""} ` +
+          `${entry.iconBlob ? `ICON="${entry.iconBlob}"` : ""}> ` +
+          `${entry.title}</A></DT>\n`;
       } else {
         const entry = item as GroupEntry;
 
-        output += `\n<DT><H3 FOLDED ADD_DATE="0">${entry.title}</H3></DT>\n<DL>`;
-        output += stringifyItems(entry.children);
-        output += `</DL>`;
+        output +=
+          `\n<DT><H3 FOLDED ADD_DATE="0">${entry.title}</H3></DT>\n<DL>` +
+          stringifyItems(entry.children) +
+          `</DL>`;
       }
     }
 
