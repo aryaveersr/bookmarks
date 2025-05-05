@@ -1,6 +1,11 @@
 import { $ } from "../common";
-import { outputGroup } from "../controllers/bookmarkGroups";
-import { activeBookmark } from "../controllers/activeBookmark";
+import {
+  activeBookmark,
+  deleteActive,
+  keepActive,
+  updateTitle,
+  updateUrl,
+} from "../controllers/activeBookmark";
 
 const iframe = $<HTMLIFrameElement>("preview-iframe");
 const titleInput = $<HTMLInputElement>("preview-input-title");
@@ -53,24 +58,17 @@ export function updatePreview(): void {
   urlInput.value = activeBookmark.url;
 }
 
-function updateTitle(): void {
-  if (!activeBookmark || !titleInput.value) return;
-  activeBookmark.title = titleInput.value;
-}
-
-titleUpdateBtn.addEventListener("click", updateTitle);
+titleUpdateBtn.addEventListener("click", () => updateTitle(titleInput.value));
 titleInput.addEventListener(
   "keydown",
-  (e) => e.key == "Enter" && updateTitle()
+  (e) => e.key == "Enter" && updateTitle(titleInput.value)
 );
 
-function updateUrl(): void {
-  if (!activeBookmark || !urlInput.value) return;
-  activeBookmark.url = urlInput.value;
-}
-
-urlUpdateBtn.addEventListener("click", updateUrl);
-urlInput.addEventListener("keydown", (ev) => ev.key == "Enter" && updateUrl());
+urlUpdateBtn.addEventListener("click", () => updateUrl(urlInput.value));
+urlInput.addEventListener(
+  "keydown",
+  (ev) => ev.key == "Enter" && updateUrl(urlInput.value)
+);
 
 newTabBtn.addEventListener(
   "click",
@@ -79,21 +77,8 @@ newTabBtn.addEventListener(
 
 reloadBtn.addEventListener(
   "click",
-  () => activeBookmark && (iframe.src = activeBookmark.url)
+  () => (iframe.src = activeBookmark?.url || "about:blank")
 );
 
-deleteBtn.addEventListener("click", () => {
-  if (!activeBookmark) return;
-
-  activeBookmark.parent!.removeChild(activeBookmark.id);
-});
-
-keepBtn.addEventListener("click", () => {
-  if (!activeBookmark) return;
-
-  let bookmark = activeBookmark;
-
-  activeBookmark.parent!.removeChild(activeBookmark.id);
-
-  outputGroup.appendChild(bookmark);
-});
+deleteBtn.addEventListener("click", () => deleteActive());
+keepBtn.addEventListener("click", () => keepActive());

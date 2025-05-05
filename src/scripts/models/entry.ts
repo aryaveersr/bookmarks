@@ -1,4 +1,4 @@
-import { activeBookmark, setActive } from "../controllers/activeBookmark";
+import { setActive } from "../controllers/activeBookmark";
 import { $ } from "../common";
 
 const bookmarkTemplate = $<HTMLTemplateElement>("template-bookmark-entry");
@@ -179,20 +179,12 @@ export class GroupEntry extends Entry {
     this.children[0]!.onActive();
   }
 
-  removeChild(id: number): void {
+  removeChild(id: number): number {
     const index = this.children.findIndex((e) => e.id == id);
 
     this.children[index]!.unmount();
     this.children.splice(index, 1);
 
-    if (activeBookmark && activeBookmark.id == id) {
-      if (this.children.length == 0) {
-        setActive(null);
-      } else if (this.children.length == index) {
-        this.children[index - 1]!.onActive();
-      } else {
-        this.children[index]!.onActive();
-      }
-    }
+    return index;
   }
 }
