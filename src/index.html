@@ -47,6 +47,7 @@
               type="text"
               placeholder="Bookmark title"
               id="preview-input-title"
+              value=""
               disabled
             />
             <button class="text" id="preview-btn-update-title" disabled>
@@ -58,6 +59,7 @@
               type="text"
               placeholder="Bookmark URL"
               id="preview-input-url"
+              value=""
               disabled
             />
             <button class="text" id="preview-btn-update-url" disabled>
@@ -82,7 +84,11 @@
           </div>
         </div>
         <div class="preview-iframe-container">
-          <iframe id="preview-iframe" frameborder="0"></iframe>
+          <iframe
+            id="preview-iframe"
+            frameborder="0"
+            src="about:blank"
+          ></iframe>
         </div>
       </section>
 

@@ -13,6 +13,10 @@ const deleteBtn = $<HTMLButtonElement>("preview-btn-delete");
 const keepBtn = $<HTMLButtonElement>("preview-btn-keep");
 
 function disableControls(): void {
+  titleInput.value = "";
+  urlInput.value = "";
+  iframe.src = "about:blank";
+
   titleInput.disabled = true;
   urlInput.disabled = true;
   titleUpdateBtn.disabled = true;

@@ -23,6 +23,18 @@ button,
     color 0.2s ease-in-out;
 }
 
+button:disabled {
+  cursor: not-allowed;
+
+  background-color: var(--gray-400);
+  border-color: var(--gray-400);
+}
+
+button:disabled:hover {
+  background-color: var(--gray-400);
+  border-color: var(--gray-400);
+}
+
 button:hover,
 .file-input-label:hover {
   background-color: var(--gray-200);
@@ -63,6 +75,15 @@ button.text:hover {
   color: white;
 }
 
+button.text:disabled {
+  color: var(--gray-500);
+}
+
+button.text:disabled:hover {
+  border-color: transparent;
+  background-color: transparent;
+}
+
 /** Danger button */
 
 button.danger {
@@ -77,4 +98,15 @@ button.danger:hover {
   border-color: var(--red-500);
 
   color: white;
+}
+
+button.danger:disabled {
+  color: var(--red-700);
+}
+
+button.danger:disabled:hover {
+  border-color: transparent;
+  background-color: transparent;
+
+  color: var(--red-700);
 }
