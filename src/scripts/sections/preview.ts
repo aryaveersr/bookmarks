@@ -1,8 +1,6 @@
-import { BookmarkEntry } from "./entry";
-import { $ } from "./common";
-import { outputGroup } from "./bookmarks";
-
-export let activeBookmark: BookmarkEntry | null;
+import { $ } from "../common";
+import { outputGroup } from "../controllers/bookmarkGroups";
+import { activeBookmark } from "../controllers/activeBookmark";
 
 const iframe = $<HTMLIFrameElement>("preview-iframe");
 const titleInput = $<HTMLInputElement>("preview-input-title");
@@ -14,21 +12,44 @@ const reloadBtn = $<HTMLButtonElement>("preview-btn-reload");
 const deleteBtn = $<HTMLButtonElement>("preview-btn-delete");
 const keepBtn = $<HTMLButtonElement>("preview-btn-keep");
 
-export function setActive(entry: BookmarkEntry | null) {
-  if (entry == null) {
-    activeBookmark = null;
+function disableControls(): void {
+  titleInput.disabled = true;
+  urlInput.disabled = true;
+  titleUpdateBtn.disabled = true;
+  urlUpdateBtn.disabled = true;
+  newTabBtn.disabled = true;
+  reloadBtn.disabled = true;
+  deleteBtn.disabled = true;
+  keepBtn.disabled = true;
+}
+
+function enableControls(): void {
+  if (!titleInput.disabled) return;
+
+  titleInput.disabled = false;
+  urlInput.disabled = false;
+  titleUpdateBtn.disabled = false;
+  urlUpdateBtn.disabled = false;
+  newTabBtn.disabled = false;
+  reloadBtn.disabled = false;
+  deleteBtn.disabled = false;
+  keepBtn.disabled = false;
+}
+
+export function updatePreview(): void {
+  if (!activeBookmark) {
+    disableControls();
     return;
   }
 
-  activeBookmark?.onInactive();
-  activeBookmark = entry;
+  enableControls();
 
   iframe.src = activeBookmark.url;
   titleInput.value = activeBookmark.title;
   urlInput.value = activeBookmark.url;
 }
 
-function updateTitle() {
+function updateTitle(): void {
   if (!activeBookmark || !titleInput.value) return;
   activeBookmark.title = titleInput.value;
 }
@@ -39,7 +60,7 @@ titleInput.addEventListener(
   (e) => e.key == "Enter" && updateTitle()
 );
 
-function updateUrl() {
+function updateUrl(): void {
   if (!activeBookmark || !urlInput.value) return;
   activeBookmark.url = urlInput.value;
 }

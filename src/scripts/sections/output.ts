@@ -1,5 +1,5 @@
-import { exportBookmarks } from "./bookmarks";
-import { $ } from "./common";
+import { exportBookmarks } from "../controllers/bookmarkGroups";
+import { $ } from "../common";
 
 const exportBtn = $<HTMLButtonElement>("output-btn-export");
 

@@ -1,5 +1,5 @@
-import { activeBookmark, setActive } from "./preview";
-import { $ } from "./common";
+import { activeBookmark, setActive } from "../controllers/activeBookmark";
+import { $ } from "../common";
 
 const bookmarkTemplate = $<HTMLTemplateElement>("template-bookmark-entry");
 const groupTemplate = $<HTMLTemplateElement>("template-group-entry");

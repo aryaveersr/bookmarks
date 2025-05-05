@@ -1,15 +1,11 @@
-import { GroupEntry, BookmarkEntry, Entry } from "./entry";
-import { $ } from "./common";
-
-const fileInput = $<HTMLInputElement>("input-input-file");
+import { GroupEntry, BookmarkEntry, Entry } from "../models/entry";
+import { $ } from "../common";
 
 export let inputGroup = new GroupEntry("inputGroup", true);
 export let outputGroup = new GroupEntry("outputGroup", true);
 
 inputGroup.mount($("input-entry-menu"));
 outputGroup.mount($("output-entry-menu"));
-
-fileInput.addEventListener("change", (ev) => handleFile(ev as any));
 
 export function handleFile(
   ev: InputEvent & { currentTarget: HTMLInputElement }
@@ -31,14 +27,15 @@ export function handleFile(
         .querySelectorAll("DT > A")
     )
       .filter((element) => element.hasAttribute("HREF"))
-      .map((element) => {
-        return new BookmarkEntry({
-          title: element.innerHTML || "Untitled",
-          url: element.getAttribute("HREF")!,
-          iconBlob: element.getAttribute("ICON") || undefined,
-          iconUrl: element.getAttribute("ICON_URI") || undefined,
-        });
-      })
+      .map(
+        (element) =>
+          new BookmarkEntry({
+            title: element.innerHTML || "Untitled",
+            url: element.getAttribute("HREF")!,
+            iconBlob: element.getAttribute("ICON") || undefined,
+            iconUrl: element.getAttribute("ICON_URI") || undefined,
+          })
+      )
       .forEach((entry) => inputGroup.appendChild(entry));
 
     inputGroup.onActive();
@@ -56,7 +53,7 @@ export function exportBookmarks(): void {
       if (item.kind === "bookmark") {
         const entry = item as BookmarkEntry;
 
-        output += `<DT><A HREF="${entry}" ADD_DATE="0" \
+        output += `<DT><A HREF="${entry.url}" ADD_DATE="0" \
         ${entry.iconUrl ? `ICON_URI="${entry.iconUrl}"` : ""}\
         ${entry.iconBlob ? `ICON="${entry.iconBlob}"` : ""}> \
         ${entry.title}</A></DT>\n`;
