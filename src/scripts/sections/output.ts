@@ -19,7 +19,6 @@ createBtn.addEventListener("click", () => {
 });
 
 radioBtn.addEventListener("click", () => outputGroup.onActive());
-
 titleInput.addEventListener(
   "keydown",
   (ev) => ev.key == "Enter" && updateGroupTitle(titleInput.value)
@@ -29,6 +28,7 @@ export function updateOutput() {
   if (activeGroup?.isTopLevel) {
     radioBtn.checked = true;
     titleInput.disabled = true;
+    titleInput.value = "";
     return;
   } else {
     radioBtn.checked = false;
