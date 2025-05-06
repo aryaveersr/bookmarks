@@ -1,0 +1,43 @@
+.output-controls {
+  display: flex;
+  flex-direction: column;
+
+  gap: 1rem;
+}
+
+.output-controls > div {
+  display: flex;
+  flex-direction: row;
+
+  gap: 1rem;
+}
+
+.output-controls > div > button:last-child {
+  flex-grow: 1;
+}
+
+.output-radio-container {
+  padding: 4px 12px;
+
+  display: flex;
+  flex-direction: row;
+
+  border: 1px solid var(--gray-800);
+  border-radius: 4px;
+
+  transition: all 0.2s ease-in-out;
+}
+
+.output-radio-container:hover {
+  border-color: var(--gray-600);
+  background-color: var(--gray-800);
+}
+
+.output-radio-container:hover > input[type="radio"] {
+  border-color: var(--gray-500);
+}
+
+.output-radio-container > label {
+  flex-grow: 1;
+  cursor: pointer;
+}

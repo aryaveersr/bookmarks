@@ -3,15 +3,17 @@ import {
   activeBookmark,
   deleteActive,
   keepActive,
-  updateTitle,
+  resetTitle,
+  resetUrl,
+  updateBookmarkTitle,
   updateUrl,
 } from "../controllers/activeBookmark";
 
 const iframe = $<HTMLIFrameElement>("preview-iframe");
 const titleInput = $<HTMLInputElement>("preview-input-title");
 const urlInput = $<HTMLInputElement>("preview-input-url");
-const titleUpdateBtn = $<HTMLButtonElement>("preview-btn-update-title");
-const urlUpdateBtn = $<HTMLButtonElement>("preview-btn-update-url");
+const titleResetBtn = $<HTMLButtonElement>("preview-btn-reset-title");
+const urlResetBtn = $<HTMLButtonElement>("preview-btn-reset-url");
 const newTabBtn = $<HTMLButtonElement>("preview-btn-new-tab");
 const reloadBtn = $<HTMLButtonElement>("preview-btn-reload");
 const deleteBtn = $<HTMLButtonElement>("preview-btn-delete");
@@ -24,8 +26,8 @@ function disableControls(): void {
 
   titleInput.disabled = true;
   urlInput.disabled = true;
-  titleUpdateBtn.disabled = true;
-  urlUpdateBtn.disabled = true;
+  titleResetBtn.disabled = true;
+  urlResetBtn.disabled = true;
   newTabBtn.disabled = true;
   reloadBtn.disabled = true;
   deleteBtn.disabled = true;
@@ -37,8 +39,8 @@ function enableControls(): void {
 
   titleInput.disabled = false;
   urlInput.disabled = false;
-  titleUpdateBtn.disabled = false;
-  urlUpdateBtn.disabled = false;
+  titleResetBtn.disabled = false;
+  urlResetBtn.disabled = false;
   newTabBtn.disabled = false;
   reloadBtn.disabled = false;
   deleteBtn.disabled = false;
@@ -53,18 +55,20 @@ export function updatePreview(): void {
 
   enableControls();
 
-  iframe.src = activeBookmark.url;
-  titleInput.value = activeBookmark.title;
-  urlInput.value = activeBookmark.url;
+  if (iframe.src != activeBookmark.url) iframe.src = activeBookmark.url;
+  if (titleInput.value != activeBookmark.title)
+    titleInput.value = activeBookmark.title;
+  if (urlInput.value != activeBookmark.url) urlInput.value = activeBookmark.url;
 }
 
-titleUpdateBtn.addEventListener("click", () => updateTitle(titleInput.value));
+titleResetBtn.addEventListener("click", () => resetTitle());
+urlResetBtn.addEventListener("click", () => resetUrl());
+
 titleInput.addEventListener(
   "keydown",
-  (e) => e.key == "Enter" && updateTitle(titleInput.value)
+  (e) => e.key == "Enter" && updateBookmarkTitle(titleInput.value)
 );
 
-urlUpdateBtn.addEventListener("click", () => updateUrl(urlInput.value));
 urlInput.addEventListener(
   "keydown",
   (ev) => ev.key == "Enter" && updateUrl(urlInput.value)

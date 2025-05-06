@@ -6,7 +6,7 @@
   },
   "scripts": {
     "check": "tsc",
-    "dev": "bun src/index.html",
+    "dev": "bun src/index.html --console",
     "build": "bun build src/index.html --outdir=dist"
   },
   "devDependencies": {

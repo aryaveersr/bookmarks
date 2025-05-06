@@ -7,6 +7,8 @@ export let outputGroup = new GroupEntry("outputGroup", true);
 inputGroup.mount($("input-entry-menu"));
 outputGroup.mount($("output-entry-menu"));
 
+outputGroup.onActive();
+
 export function handleFile(
   ev: InputEvent & { currentTarget: HTMLInputElement }
 ): boolean {
@@ -38,7 +40,7 @@ export function handleFile(
       )
       .forEach((entry) => inputGroup.appendChild(entry));
 
-    inputGroup.onActive();
+    inputGroup.children[0]?.onActive();
   };
 
   reader.readAsText(ev.currentTarget.files[0]!);

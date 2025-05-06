@@ -28,12 +28,12 @@ main {
 
 .panel > .entry-group-menu {
   overflow: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
 
   padding-right: 1rem;
 }
 
 .panel-input > div,
-.panel-output > button {
+.panel-output > div {
   margin-right: 1rem;
 }

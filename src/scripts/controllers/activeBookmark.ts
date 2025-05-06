@@ -1,14 +1,21 @@
 import type { BookmarkEntry } from "../models/entry";
 import { updatePreview } from "../sections/preview";
-import { inputGroup, outputGroup } from "./bookmarkGroups";
+import { activeGroup } from "./activeGroup";
+import { inputGroup } from "./bookmarkGroups";
 
 export let activeBookmark: BookmarkEntry | null;
 
-export function setActive(entry: BookmarkEntry | null) {
+let originalTitle: string = "";
+let originalUrl: string = "";
+
+export function setActiveBookmark(entry: BookmarkEntry | null) {
   if (entry?.id == activeBookmark?.id) return;
 
   activeBookmark?.onInactive();
   activeBookmark = entry;
+
+  originalTitle = entry?.title || "";
+  originalUrl = entry?.url || "";
 
   if (!entry && inputGroup.children.length != 0) {
     inputGroup.children[0]!.onActive();
@@ -18,7 +25,7 @@ export function setActive(entry: BookmarkEntry | null) {
   updatePreview();
 }
 
-export function updateTitle(newTitle: string): void {
+export function updateBookmarkTitle(newTitle: string): void {
   if (!activeBookmark || !newTitle) return;
   activeBookmark.title = newTitle;
 }
@@ -28,6 +35,20 @@ export function updateUrl(newUrl: string): void {
   activeBookmark.url = newUrl;
 }
 
+export function resetTitle(): void {
+  if (!activeBookmark) return;
+
+  activeBookmark.title = originalTitle;
+  updatePreview();
+}
+
+export function resetUrl(): void {
+  if (!activeBookmark) return;
+
+  activeBookmark.url = originalUrl;
+  updatePreview();
+}
+
 export function deleteActive(): void {
   if (!activeBookmark) return;
 
@@ -35,7 +56,7 @@ export function deleteActive(): void {
   const index = parent.removeChild(activeBookmark.id);
 
   if (parent.children.length == 0) {
-    setActive(null);
+    setActiveBookmark(null);
   } else if (parent.children.length == index) {
     parent.children[index - 1]!.onActive();
   } else {
@@ -48,5 +69,5 @@ export function keepActive(): void {
 
   let bookmark = activeBookmark;
   deleteActive();
-  outputGroup.appendChild(bookmark);
+  activeGroup!.appendChild(bookmark);
 }

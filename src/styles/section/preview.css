@@ -23,6 +23,13 @@
   justify-content: space-between;
 }
 
+.preview-control-buttons > div {
+  display: flex;
+  flex-direction: row;
+
+  gap: 1rem;
+}
+
 .preview-iframe-container {
   flex-grow: 1;
   width: 100%;

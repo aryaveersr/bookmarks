@@ -50,8 +50,8 @@
               value=""
               disabled
             />
-            <button class="text" id="preview-btn-update-title" disabled>
-              Update title
+            <button class="outline" id="preview-btn-reset-title" disabled>
+              Reset title
             </button>
           </div>
           <div>
@@ -62,16 +62,16 @@
               value=""
               disabled
             />
-            <button class="text" id="preview-btn-update-url" disabled>
-              Update URL
+            <button class="outline" id="preview-btn-reset-url" disabled>
+              Reset URL
             </button>
           </div>
           <div class="preview-control-buttons">
             <div>
-              <button class="text" id="preview-btn-reload" disabled>
+              <button class="outline" id="preview-btn-reload" disabled>
                 Reload
               </button>
-              <button class="text" id="preview-btn-new-tab" disabled>
+              <button class="outline" id="preview-btn-new-tab" disabled>
                 Open in new tab
               </button>
             </div>
@@ -93,7 +93,25 @@
       </section>
 
       <section class="panel panel-output">
-        <button id="output-btn-export">Export as HTML</button>
+        <div class="output-controls">
+          <div>
+            <button class="outline" id="output-btn-create-group">
+              Create group
+            </button>
+            <button id="output-btn-export">Export as HTML</button>
+          </div>
+          <input
+            type="text"
+            id="output-input-title"
+            placeholder="Group title"
+            value=""
+            disabled
+          />
+        </div>
+        <div class="output-radio-container">
+          <label for="output-radio">Root</label>
+          <input type="radio" name="active-group" id="output-radio" checked />
+        </div>
         <menu class="entry-group-menu" id="output-entry-menu"></menu>
       </section>
     </main>
@@ -114,7 +132,10 @@
     <template id="template-group-entry">
       <li class="entry-group">
         <details>
-          <summary slot="title"></summary>
+          <summary>
+            <span slot="title"></span>
+            <input type="radio" name="active-group" slot="radio" />
+          </summary>
           <menu slot="children" class="entry-group-menu"></menu>
         </details>
       </li>

@@ -20,3 +20,12 @@ input[type="text"]:hover {
 input[type="text"]:focus {
   border-color: var(--gray-300);
 }
+
+input[type="text"]:disabled {
+  cursor: not-allowed;
+}
+
+input[type="text"]:disabled:hover {
+  border-color: var(--gray-800);
+  background-color: transparent;
+}

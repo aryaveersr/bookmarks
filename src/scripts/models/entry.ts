@@ -1,5 +1,7 @@
-import { setActive } from "../controllers/activeBookmark";
+import { setActiveBookmark } from "../controllers/activeBookmark";
 import { $ } from "../common";
+import { setActiveGroup } from "../controllers/activeGroup";
+import { inputGroup } from "../controllers/bookmarkGroups";
 
 const bookmarkTemplate = $<HTMLTemplateElement>("template-bookmark-entry");
 const groupTemplate = $<HTMLTemplateElement>("template-group-entry");
@@ -19,6 +21,8 @@ export abstract class Entry {
   abstract unmount(): void;
 
   abstract onActive(): void;
+
+  abstract onInactive(): void;
 
   constructor() {
     this.id = Entry.idCounter++;
@@ -90,9 +94,13 @@ export class BookmarkEntry extends Entry {
       ? this.iconUrl
       : "about:blank";
 
-    this.root
-      .querySelector("button")!
-      .addEventListener("click", () => this.onActive());
+    this.root.querySelector("button")!.addEventListener("click", () => {
+      this.onActive();
+
+      if (this.parent?.id != inputGroup.id) {
+        this.parent?.onActive();
+      }
+    });
   }
 
   unmount(): void {
@@ -103,7 +111,7 @@ export class BookmarkEntry extends Entry {
 
   onActive(): void {
     this.root!.setAttribute("data-active", "true");
-    setActive(this);
+    setActiveBookmark(this);
   }
 
   onInactive(): void {
@@ -147,6 +155,13 @@ export class GroupEntry extends Entry {
     if (this.isTopLevel) return;
 
     this.root.querySelector("[slot='title']")!.innerHTML = this._title;
+    this.root!.querySelector<HTMLInputElement>(
+      "[slot='radio']"
+    )!.addEventListener("click", () => this.onActive());
+
+    this.root
+      .querySelector("summary")!
+      .addEventListener("click", () => this.onActive());
   }
 
   unmount(): void {
@@ -174,9 +189,23 @@ export class GroupEntry extends Entry {
   }
 
   onActive(): void {
-    if (this.children.length == 0) return;
+    this.root!.setAttribute("data-active", "true");
 
-    this.children[0]!.onActive();
+    if (!this.isTopLevel) {
+      this.root!.querySelector<HTMLInputElement>("[slot='radio']")!.checked =
+        true;
+    }
+
+    setActiveGroup(this);
+  }
+
+  onInactive(): void {
+    this.root?.removeAttribute("data-active");
+
+    if (!this.isTopLevel) {
+      this.root!.querySelector<HTMLInputElement>("[slot='radio']")!.checked =
+        false;
+    }
   }
 
   removeChild(id: number): number {

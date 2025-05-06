@@ -7,6 +7,10 @@
   width: 100%;
 }
 
+label {
+  user-select: none;
+}
+
 button,
 .file-input-label {
   cursor: pointer;
@@ -59,6 +63,15 @@ button.outline:hover {
   background-color: var(--gray-800);
 }
 
+button.outline:disabled {
+  color: var(--gray-600);
+}
+
+button.outline:disabled:hover {
+  border-color: var(--gray-800);
+  background-color: transparent;
+}
+
 /** Text button */
 
 button.text {
@@ -75,19 +88,10 @@ button.text:hover {
   color: white;
 }
 
-button.text:disabled {
-  color: var(--gray-500);
-}
-
-button.text:disabled:hover {
-  border-color: transparent;
-  background-color: transparent;
-}
-
 /** Danger button */
 
 button.danger {
-  border-color: transparent;
+  border-color: var(--red-500);
   background-color: transparent;
 
   color: var(--red-500);
@@ -95,17 +99,16 @@ button.danger {
 
 button.danger:hover {
   background-color: var(--red-500);
-  border-color: var(--red-500);
 
   color: white;
 }
 
 button.danger:disabled {
+  border-color: var(--red-700);
   color: var(--red-700);
 }
 
 button.danger:disabled:hover {
-  border-color: transparent;
   background-color: transparent;
 
   color: var(--red-700);
