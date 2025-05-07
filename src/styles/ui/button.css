@@ -88,28 +88,41 @@ button.text:hover {
   color: white;
 }
 
-/** Danger button */
+/** Danger outline button */
 
-button.danger {
+button.danger.outline {
   border-color: var(--red-500);
   background-color: transparent;
 
   color: var(--red-500);
 }
 
-button.danger:hover {
+button.danger.outline:hover {
   background-color: var(--red-500);
 
   color: white;
 }
 
-button.danger:disabled {
+button.danger.outline:disabled {
   border-color: var(--red-700);
   color: var(--red-700);
 }
 
-button.danger:disabled:hover {
+button.danger.outline:disabled:hover {
   background-color: transparent;
 
   color: var(--red-700);
+}
+
+/** Danger text button */
+
+button.danger.text {
+  color: var(--red-500);
+}
+
+button.danger.text:hover {
+  background-color: var(--red-500);
+  border-color: var(--red-500);
+
+  color: white;
 }

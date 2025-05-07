@@ -8,6 +8,8 @@
 @import "section/preview.css";
 @import "section/output.css";
 @import "section/start.css";
+@import "section/settings.css";
+@import "section/overlay.css";
 
 :root {
   --gray-950: hsl(0, 0%, 4%);

@@ -8,7 +8,7 @@
     <title>Bookmarks</title>
   </head>
   <body>
-    <section class="section-start">
+    <section class="overlay section-start">
       <div>
         <h2>Bookmarks</h2>
 
@@ -23,9 +23,51 @@
       </div>
     </section>
 
+    <section class="overlay section-settings" style="display: none">
+      <div>
+        <header>
+          <span>Settings</span>
+          <button class="danger text" id="settings-btn-close">✖</button>
+        </header>
+        <div class="settings-reset-btn-container">
+          <button id="settings-btn-reset">Reset keybinds</button>
+        </div>
+        <main>
+          <div data-keybind="keepBookmark">
+            <span>Keep bookmark</span>
+            <button class="text"></button>
+          </div>
+          <div data-keybind="deleteBookmark">
+            <span>Delete bookmark</span>
+            <button class="text"></button>
+          </div>
+          <div data-keybind="createGroup">
+            <span>Create group</span>
+            <button class="text"></button>
+          </div>
+          <div data-keybind="deleteGroup">
+            <span>Delete group</span>
+            <button class="text"></button>
+          </div>
+          <div data-keybind="openInNewTab">
+            <span>Open in new tab</span>
+            <button class="text"></button>
+          </div>
+          <div data-keybind="nextBookmark">
+            <span>Next bookmark</span>
+            <button class="text"></button>
+          </div>
+          <div data-keybind="prevBookmark">
+            <span>Previous bookmark</span>
+            <button class="text"></button>
+          </div>
+        </main>
+      </div>
+    </section>
+
     <header>
       <menu></menu>
-      <button class="text small">Settings</button>
+      <button class="text small" id="header-btn-settings">Settings</button>
     </header>
 
     <main>
@@ -76,7 +118,7 @@
               </button>
             </div>
             <div>
-              <button class="danger" id="preview-btn-delete" disabled>
+              <button class="danger outline" id="preview-btn-delete" disabled>
                 Delete
               </button>
               <button id="preview-btn-keep" disabled>Keep</button>

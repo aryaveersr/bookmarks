@@ -1,0 +1,64 @@
+.section-settings {
+  background-color: rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.section-settings > div {
+  border-radius: 1rem;
+  border: 1px solid var(--gray-800);
+  background-color: var(--gray-950);
+
+  z-index: 999;
+
+  width: 50%;
+}
+
+.section-settings header {
+  padding: 0px;
+  align-items: stretch;
+}
+
+.section-settings header span {
+  padding-inline: 2rem;
+  padding-block: 8px;
+}
+
+.section-settings header button {
+  border-top-right-radius: 1rem;
+  margin-top: -1px;
+  margin-right: -1px;
+}
+
+.section-settings main {
+  padding: 1rem 2rem 2rem 2rem;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 1rem;
+}
+
+.section-settings main span {
+  color: var(--gray-300);
+}
+
+.section-settings main div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.settings-reset-btn-container {
+  width: 100%;
+
+  padding-inline: 2rem;
+  padding-top: 1rem;
+}
+
+.settings-reset-btn-container button {
+  width: 100%;
+}

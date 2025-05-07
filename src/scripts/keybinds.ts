@@ -7,6 +7,18 @@ export interface Keybind {
   shiftKey: boolean;
 }
 
+export function keybindToString(action: Keybind): string {
+  let result = "";
+
+  if (action.ctrlKey) result += "Ctrl + ";
+  if (action.shiftKey) result += "Shift + ";
+  if (action.altKey) result += "Alt + ";
+
+  result += action.key || "...";
+
+  return result;
+}
+
 const defaultKeybinds: { [key: string]: Keybind } = {
   keepBookmark: { key: "Enter", ctrlKey: false, altKey: true, shiftKey: false },
   createGroup: { key: "n", ctrlKey: false, altKey: true, shiftKey: false },
@@ -53,12 +65,27 @@ class KeybindsManager {
   constructor() {
     const keybindStr = localStorage.getItem("keybinds");
     if (keybindStr) this.keybindsMap = JSON.parse(keybindStr);
+
+    window.addEventListener("keydown", (ev) => {
+      const action: Keybind = {
+        key: ev.key,
+        ctrlKey: ev.ctrlKey,
+        shiftKey: ev.shiftKey,
+        altKey: ev.altKey,
+      };
+
+      if (this.onKeydown(action)) ev.preventDefault();
+    });
   }
 
-  setKeybind(key: string, keybind: Keybind): void {
+  set(key: string, keybind: Keybind): void {
     this.keybindsMap[key] = keybind;
+    localStorage.setItem("keybinds", JSON.stringify(this.keybindsMap));
+  }
 
-    // TODO: save to localstorage
+  reset(): void {
+    this.keybindsMap = defaultKeybinds;
+    localStorage.setItem("keybinds", JSON.stringify(this.keybindsMap));
   }
 
   onKeydown(userAction: Keybind): boolean {
