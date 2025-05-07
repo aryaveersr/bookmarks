@@ -1,13 +1,5 @@
 import { $ } from "../common";
-import {
-  activeBookmark,
-  deleteActive,
-  keepActive,
-  resetTitle,
-  resetUrl,
-  updateBookmarkTitle,
-  updateUrl,
-} from "../controllers/activeBookmark";
+import bookmark from "../bookmark";
 
 const iframe = $<HTMLIFrameElement>("preview-iframe");
 const titleInput = $<HTMLInputElement>("preview-input-title");
@@ -18,6 +10,39 @@ const newTabBtn = $<HTMLButtonElement>("preview-btn-new-tab");
 const reloadBtn = $<HTMLButtonElement>("preview-btn-reload");
 const deleteBtn = $<HTMLButtonElement>("preview-btn-delete");
 const keepBtn = $<HTMLButtonElement>("preview-btn-keep");
+
+newTabBtn.addEventListener("click", () => bookmark.openInNewTab());
+deleteBtn.addEventListener("click", () => bookmark.deleteActiveBookmark());
+keepBtn.addEventListener("click", () => bookmark.keepActiveBookmark());
+
+titleResetBtn.addEventListener("click", () => {
+  bookmark.resetBookmarkTitle();
+
+  titleInput.value = bookmark.activeBookmark?.title || "";
+});
+
+urlResetBtn.addEventListener("click", () => {
+  bookmark.resetBookmarkUrl();
+
+  urlInput.value = bookmark.activeBookmark?.url || "";
+});
+
+titleInput.addEventListener("keydown", (ev) => {
+  if (ev.key != "Enter") return;
+
+  bookmark.activeBookmark!.title = titleInput.value;
+});
+
+urlInput.addEventListener("keydown", (ev) => {
+  if (ev.key != "Enter") return;
+
+  bookmark.activeBookmark!.url = urlInput.value;
+});
+
+reloadBtn.addEventListener(
+  "click",
+  () => (iframe.src = bookmark.activeBookmark?.url || "about:blank")
+);
 
 function disableControls(): void {
   titleInput.value = "";
@@ -48,41 +73,14 @@ function enableControls(): void {
 }
 
 export function updatePreview(): void {
-  if (!activeBookmark) {
+  if (!bookmark.activeBookmark) {
     disableControls();
     return;
   }
 
   enableControls();
 
-  if (iframe.src != activeBookmark.url) iframe.src = activeBookmark.url;
-  if (titleInput.value != activeBookmark.title)
-    titleInput.value = activeBookmark.title;
-  if (urlInput.value != activeBookmark.url) urlInput.value = activeBookmark.url;
+  iframe.src = bookmark.activeBookmark.url;
+  titleInput.value = bookmark.activeBookmark.title;
+  urlInput.value = bookmark.activeBookmark.url;
 }
-
-titleResetBtn.addEventListener("click", () => resetTitle());
-urlResetBtn.addEventListener("click", () => resetUrl());
-
-titleInput.addEventListener(
-  "keydown",
-  (e) => e.key == "Enter" && updateBookmarkTitle(titleInput.value)
-);
-
-urlInput.addEventListener(
-  "keydown",
-  (ev) => ev.key == "Enter" && updateUrl(urlInput.value)
-);
-
-newTabBtn.addEventListener(
-  "click",
-  () => activeBookmark && window.open(activeBookmark.url, "_blank")?.focus()
-);
-
-reloadBtn.addEventListener(
-  "click",
-  () => (iframe.src = activeBookmark?.url || "about:blank")
-);
-
-deleteBtn.addEventListener("click", () => deleteActive());
-keepBtn.addEventListener("click", () => keepActive());

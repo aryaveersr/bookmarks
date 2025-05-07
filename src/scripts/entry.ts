@@ -1,7 +1,5 @@
-import { setActiveBookmark } from "../controllers/activeBookmark";
-import { $ } from "../common";
-import { setActiveGroup } from "../controllers/activeGroup";
-import { inputGroup } from "../controllers/bookmarkGroups";
+import bookmark from "./bookmark";
+import { $ } from "./common";
 
 const bookmarkTemplate = $<HTMLTemplateElement>("template-bookmark-entry");
 const groupTemplate = $<HTMLTemplateElement>("template-group-entry");
@@ -9,7 +7,6 @@ const groupTemplate = $<HTMLTemplateElement>("template-group-entry");
 export abstract class Entry {
   private static idCounter = 0;
 
-  abstract kind: "bookmark" | "group";
   readonly id: number;
   parent?: GroupEntry;
   root?: HTMLElement;
@@ -30,8 +27,6 @@ export abstract class Entry {
 }
 
 export class BookmarkEntry extends Entry {
-  readonly kind = "bookmark";
-
   private _title: string;
   private _url: string;
   iconBlob?: string;
@@ -94,13 +89,9 @@ export class BookmarkEntry extends Entry {
       ? this.iconUrl
       : "about:blank";
 
-    this.root.querySelector("button")!.addEventListener("click", () => {
-      this.onActive();
-
-      if (this.parent?.id != inputGroup.id) {
-        this.parent?.onActive();
-      }
-    });
+    this.root
+      .querySelector("button")!
+      .addEventListener("click", () => bookmark.setActiveBookmark(this));
   }
 
   unmount(): void {
@@ -111,7 +102,6 @@ export class BookmarkEntry extends Entry {
 
   onActive(): void {
     this.root!.setAttribute("data-active", "true");
-    setActiveBookmark(this);
   }
 
   onInactive(): void {
@@ -120,7 +110,6 @@ export class BookmarkEntry extends Entry {
 }
 
 export class GroupEntry extends Entry {
-  readonly kind = "group";
   readonly isTopLevel: boolean;
 
   private _title: string;
@@ -155,20 +144,17 @@ export class GroupEntry extends Entry {
     if (this.isTopLevel) return;
 
     this.root.querySelector("[slot='title']")!.innerHTML = this._title;
+
     this.root!.querySelector<HTMLInputElement>(
       "[slot='radio']"
-    )!.addEventListener("click", () => this.onActive());
+    )!.addEventListener("click", () => bookmark.setActiveGroup(this));
 
     this.root
       .querySelector("summary")!
-      .addEventListener("click", () => this.onActive());
+      .addEventListener("click", () => bookmark.setActiveGroup(this));
   }
 
   unmount(): void {
-    if (this.isTopLevel) {
-      throw new Error("Can't unmount top level group.");
-    }
-
     for (const child of this.children) {
       child.unmount();
     }
@@ -189,23 +175,19 @@ export class GroupEntry extends Entry {
   }
 
   onActive(): void {
+    if (this.isTopLevel) return;
+
     this.root!.setAttribute("data-active", "true");
-
-    if (!this.isTopLevel) {
-      this.root!.querySelector<HTMLInputElement>("[slot='radio']")!.checked =
-        true;
-    }
-
-    setActiveGroup(this);
+    this.root!.querySelector<HTMLInputElement>("[slot='radio']")!.checked =
+      true;
   }
 
   onInactive(): void {
-    this.root?.removeAttribute("data-active");
+    if (this.isTopLevel) return;
 
-    if (!this.isTopLevel) {
-      this.root!.querySelector<HTMLInputElement>("[slot='radio']")!.checked =
-        false;
-    }
+    this.root?.removeAttribute("data-active");
+    this.root!.querySelector<HTMLInputElement>("[slot='radio']")!.checked =
+      false;
   }
 
   removeChild(id: number): number {
@@ -216,4 +198,69 @@ export class GroupEntry extends Entry {
 
     return index;
   }
+}
+
+export function parseFile(
+  file: File,
+  callback: (entries: BookmarkEntry[]) => void
+): void {
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    if (!reader.result) {
+      throw new Error(`Failed to read file: ${reader.error}.`);
+    }
+
+    const nodes = new DOMParser()
+      .parseFromString(reader.result as string, "text/html")
+      .querySelectorAll("DT > A");
+
+    const entries = Array.from(nodes)
+      .filter((element) => element.hasAttribute("HREF"))
+      .map((element) => {
+        return new BookmarkEntry({
+          title: element.innerHTML || "Untitled",
+          url: element.getAttribute("HREF")!,
+          iconBlob: element.getAttribute("ICON") || undefined,
+          iconUrl: element.getAttribute("ICON_URI") || undefined,
+        });
+      });
+
+    callback(entries);
+  };
+
+  reader.readAsText(file);
+}
+
+export function stringifyBookmarks(group: GroupEntry): string {
+  function stringifyItems(items: Entry[]): string {
+    let output = "";
+
+    for (const entry of items as (BookmarkEntry | GroupEntry)[]) {
+      if (entry instanceof BookmarkEntry) {
+        output +=
+          `<DT><A HREF="${entry.url}" ADD_DATE="0" ` +
+          `${entry.iconUrl ? `ICON_URI="${entry.iconUrl}"` : ""} ` +
+          `${entry.iconBlob ? `ICON="${entry.iconBlob}"` : ""}> ` +
+          `${entry.title}</A></DT>\n`;
+      } else {
+        output +=
+          `\n<DT><H3 FOLDED ADD_DATE="0">${entry.title}</H3></DT>\n<DL>` +
+          stringifyItems(entry.children) +
+          `</DL>`;
+      }
+    }
+
+    return output;
+  }
+
+  return `<!DOCTYPE NETSCAPE-Bookmark-file-1>
+    <!--This is an automatically generated file.
+    It will be read and overwritten.
+    Do Not Edit! -->
+    <Title>Bookmarks</Title>
+    <H1>Bookmarks</H1>
+    <DL>
+    ${stringifyItems(group.children)}
+    </DL>`;
 }
