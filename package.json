@@ -6,8 +6,8 @@
   },
   "scripts": {
     "check": "tsc",
-    "dev": "bun src/index.html --console",
-    "build": "bun build src/index.html --outdir=dist"
+    "dev": "bun src/index.html --console ",
+    "build": "bun ./build.ts"
   },
   "devDependencies": {
     "@types/web": "^0.0.231"
