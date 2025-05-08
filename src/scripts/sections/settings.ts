@@ -1,11 +1,16 @@
 import { $ } from "../common";
-import keybinds, { keybindToString, type Keybind } from "../keybinds";
+import keybinds, {
+  keybindToString,
+  keyTosString,
+  type Keybind,
+} from "../keybinds";
 
 const headerBtn = $<HTMLButtonElement>("header-btn-settings");
 const section = document.querySelector(".section-settings") as HTMLElement;
 const closeBtn = $<HTMLButtonElement>("settings-btn-close");
 const keybindContainer = section.querySelector("main")!;
 const resetBtn = $<HTMLButtonElement>("settings-btn-reset");
+const keybindTemplate = $<HTMLTemplateElement>("template-keybind-btn");
 
 let currentActive: string = "";
 let currentAction: Keybind = {
@@ -15,14 +20,18 @@ let currentAction: Keybind = {
   shiftKey: false,
 };
 
-for (const child of keybindContainer.children) {
-  const key = child.getAttribute("data-keybind")!;
-  const action = keybinds.keybindsMap[key]!;
+for (const [key, action] of Object.entries(keybinds.keybindsMap)) {
+  keybindContainer.appendChild(keybindTemplate.content.cloneNode(true));
+  const node = keybindContainer.lastElementChild!;
 
-  child.children[1]!.innerHTML = keybindToString(action);
-  child.children[1]!.addEventListener("click", () => {
+  node.setAttribute("data-keybind", key);
+
+  node.children[0]!.innerHTML = keyTosString(key);
+
+  node.children[1]!.innerHTML = keybindToString(action);
+  node.children[1]!.addEventListener("click", () => {
     currentActive = key;
-    child.children[1]!.innerHTML = "Waiting for keypress....";
+    node.children[1]!.innerHTML = "Waiting for keypress....";
   });
 }
 

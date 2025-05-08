@@ -19,6 +19,18 @@ export function keybindToString(action: Keybind): string {
   return result;
 }
 
+export function keyTosString(key: string): string {
+  return {
+    keepBookmark: "Keep bookmark",
+    deleteBookmark: "Delete bookmark",
+    createGroup: "Create group",
+    deleteGroup: "Delete group",
+    openInNewTab: "Open in new tab",
+    nextBookmark: "Next bookmark",
+    prevBookmark: "Previous bookmark",
+  }[key]!;
+}
+
 const defaultKeybinds: { [key: string]: Keybind } = {
   keepBookmark: { key: "Enter", ctrlKey: false, altKey: true, shiftKey: false },
   createGroup: { key: "n", ctrlKey: false, altKey: true, shiftKey: false },
