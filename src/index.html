@@ -39,7 +39,7 @@
     </header>
     <main>
       <section class="input">
-        <label class="file">
+        <label class="file" tabindex="0">
           Import bookmarks from HTML
           <input type="file" />
         </label>
@@ -69,7 +69,11 @@
             </div>
           </div>
         </form>
-        <iframe src="about:blank" title="Bookmark preview"></iframe>
+        <iframe
+          tabindex="-1"
+          src="about:blank"
+          title="Bookmark preview"
+        ></iframe>
       </section>
       <section class="output">
         <div>
