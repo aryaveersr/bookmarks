@@ -10,6 +10,7 @@ const urlInput = $<HTMLInputElement>(".preview input[name='url']");
 
 const iframe = $<HTMLIFrameElement>("iframe");
 
+deleteBtn.addEventListener("click", () => bookmarks.deleteActiveBookmark());
 form.addEventListener("submit", () => bookmarks.saveActiveBookmark());
 form.addEventListener("reset", (ev) => {
   if (!bookmarks.activeBookmark) return;
@@ -20,13 +21,6 @@ form.addEventListener("reset", (ev) => {
 
   titleInput.value = bookmarks.originalTitle;
   urlInput.value = bookmarks.originalUrl;
-});
-
-deleteBtn.addEventListener("click", () => bookmarks.deleteActiveBookmark());
-form.addEventListener("keydown", (ev) => {
-  if ((ev.key == "Backspace" || ev.key == "Delete") && ev.altKey) {
-    bookmarks.deleteActiveBookmark();
-  }
 });
 
 function disablePreview() {

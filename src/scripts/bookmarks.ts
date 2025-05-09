@@ -17,15 +17,16 @@ class BookmarkManager {
   constructor() {
     window.addEventListener("keydown", (ev) => {
       if (!this.activeBookmark) return;
-
+      console.log(ev);
       if (ev.key == "ArrowDown") this.nextBookmark();
       else if (ev.key == "ArrowUp") this.prevBookmark();
-      else if (
-        (ev.key == "Backspace" || ev.key == "Delete") &&
-        ev.altKey &&
-        ev.shiftKey
-      )
-        this.deleteActiveGroup();
+      else if ((ev.key == "Backspace" || ev.key == "Delete") && ev.altKey) {
+        if (ev.shiftKey) {
+          this.deleteActiveGroup();
+        } else {
+          this.deleteActiveBookmark();
+        }
+      }
     });
   }
 
@@ -40,6 +41,7 @@ class BookmarkManager {
 
     if (this.activeBookmark) {
       this.activeBookmark.setAttribute("data-active", "true");
+      this.activeBookmark.focus();
 
       this.originalTitle = this.activeBookmark.title;
       this.originalUrl = this.activeBookmark.url;
