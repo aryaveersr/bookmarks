@@ -21,6 +21,7 @@ menu[is="c-root-group"] {
   background-color: transparent;
   border: 1px solid var(--gray-900);
   border-radius: 4px;
+  outline: 0px;
 
   color: white;
   padding: 8px;
@@ -37,6 +38,10 @@ menu[is="c-root-group"] {
 .bookmark[data-active="true"] {
   background-color: var(--gray-900);
   border-color: var(--gray-700);
+}
+
+.bookmark:focus {
+  border-color: lightskyblue;
 }
 
 .bookmark img {
