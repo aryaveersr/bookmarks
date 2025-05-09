@@ -1,0 +1,56 @@
+input[type="file"] {
+  display: none;
+}
+
+.file {
+  display: inline-block;
+}
+
+button,
+.file {
+  color: black;
+  border: 1px solid var(--gray-50);
+  background-color: var(--gray-50);
+  border-radius: 4px;
+
+  cursor: pointer;
+
+  padding: 8px 16px;
+  text-align: center;
+
+  transition: all 0.2s ease-in-out;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  filter: opacity(0.5);
+}
+
+button:hover,
+.file:hover {
+  background-color: var(--gray-200);
+  border-color: var(--gray-200);
+}
+
+button.secondary {
+  color: white;
+  border-color: var(--gray-800);
+  background-color: var(--gray-800);
+}
+
+button.secondary:hover {
+  border-color: var(--gray-700);
+  background-color: var(--gray-700);
+}
+
+button.danger {
+  border-color: var(--red-500);
+  background-color: var(--red-500);
+
+  color: white;
+}
+
+button.danger:hover {
+  border-color: var(--red-700);
+  background-color: var(--red-700);
+}

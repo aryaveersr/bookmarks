@@ -1,2 +1,2 @@
-export const $ = <T = HTMLElement>(id: string): T =>
-  document.getElementById(id) as T;
+export const $ = <T = HTMLElement>(query: string): T =>
+  document.querySelector(query) as T;

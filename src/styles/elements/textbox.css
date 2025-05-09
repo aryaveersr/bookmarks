@@ -1,3 +1,12 @@
+label {
+  display: flex;
+  flex-direction: column;
+
+  color: var(--gray-200);
+
+  gap: 4px;
+}
+
 input[type="text"] {
   padding: 8px 16px;
 
@@ -6,10 +15,14 @@ input[type="text"] {
   background-color: transparent;
   outline: none;
 
-  color: white;
+  color: var(--gray-300);
 
-  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out,
-    color 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+input:disabled {
+  cursor: not-allowed;
+  filter: opacity(0.5);
 }
 
 input[type="text"]:hover {
@@ -19,13 +32,4 @@ input[type="text"]:hover {
 
 input[type="text"]:focus {
   border-color: var(--gray-300);
-}
-
-input[type="text"]:disabled {
-  cursor: not-allowed;
-}
-
-input[type="text"]:disabled:hover {
-  border-color: var(--gray-800);
-  background-color: transparent;
 }

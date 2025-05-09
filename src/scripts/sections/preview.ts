@@ -1,86 +1,67 @@
+import bookmarks from "../bookmarks";
 import { $ } from "../common";
-import bookmark from "../bookmark";
 
-const iframe = $<HTMLIFrameElement>("preview-iframe");
-const titleInput = $<HTMLInputElement>("preview-input-title");
-const urlInput = $<HTMLInputElement>("preview-input-url");
-const titleResetBtn = $<HTMLButtonElement>("preview-btn-reset-title");
-const urlResetBtn = $<HTMLButtonElement>("preview-btn-reset-url");
-const newTabBtn = $<HTMLButtonElement>("preview-btn-new-tab");
-const reloadBtn = $<HTMLButtonElement>("preview-btn-reload");
-const deleteBtn = $<HTMLButtonElement>("preview-btn-delete");
-const keepBtn = $<HTMLButtonElement>("preview-btn-keep");
+const form = $<HTMLFormElement>("form");
+const deleteBtn = $<HTMLButtonElement>("#preview-delete");
+const saveBtn = $<HTMLButtonElement>("#preview-save");
+const resetBtn = $<HTMLButtonElement>("#preview-reset");
+const titleInput = $<HTMLInputElement>(".preview input[name='title']");
+const urlInput = $<HTMLInputElement>(".preview input[name='url']");
 
-newTabBtn.addEventListener("click", () => bookmark.openInNewTab());
-deleteBtn.addEventListener("click", () => bookmark.deleteActiveBookmark());
-keepBtn.addEventListener("click", () => bookmark.keepActiveBookmark());
+const iframe = $<HTMLIFrameElement>("iframe");
 
-titleResetBtn.addEventListener("click", () => {
-  bookmark.resetBookmarkTitle();
+form.addEventListener("submit", () => bookmarks.saveActiveBookmark());
+form.addEventListener("reset", (ev) => {
+  if (!bookmarks.activeBookmark) return;
+  ev.preventDefault();
 
-  titleInput.value = bookmark.activeBookmark?.title || "";
+  bookmarks.activeBookmark.title = bookmarks.originalTitle;
+  bookmarks.activeBookmark.url = bookmarks.originalUrl;
+
+  titleInput.value = bookmarks.originalTitle;
+  urlInput.value = bookmarks.originalUrl;
 });
 
-urlResetBtn.addEventListener("click", () => {
-  bookmark.resetBookmarkUrl();
-
-  urlInput.value = bookmark.activeBookmark?.url || "";
+deleteBtn.addEventListener("click", () => bookmarks.deleteActiveBookmark());
+form.addEventListener("keydown", (ev) => {
+  if ((ev.key == "Backspace" || ev.key == "Delete") && ev.altKey) {
+    bookmarks.deleteActiveBookmark();
+  }
 });
 
-titleInput.addEventListener("keydown", (ev) => {
-  if (ev.key != "Enter") return;
-
-  bookmark.activeBookmark!.title = titleInput.value;
-});
-
-urlInput.addEventListener("keydown", (ev) => {
-  if (ev.key != "Enter") return;
-
-  bookmark.activeBookmark!.url = urlInput.value;
-});
-
-reloadBtn.addEventListener(
-  "click",
-  () => (iframe.src = bookmark.activeBookmark?.url || "about:blank")
-);
-
-function disableControls(): void {
+function disablePreview() {
+  iframe.src = "about:blank";
   titleInput.value = "";
   urlInput.value = "";
-  iframe.src = "about:blank";
 
   titleInput.disabled = true;
   urlInput.disabled = true;
-  titleResetBtn.disabled = true;
-  urlResetBtn.disabled = true;
-  newTabBtn.disabled = true;
-  reloadBtn.disabled = true;
   deleteBtn.disabled = true;
-  keepBtn.disabled = true;
+  saveBtn.disabled = true;
+  resetBtn.disabled = true;
 }
 
-function enableControls(): void {
+function enablePreview() {
   if (!titleInput.disabled) return;
 
   titleInput.disabled = false;
   urlInput.disabled = false;
-  titleResetBtn.disabled = false;
-  urlResetBtn.disabled = false;
-  newTabBtn.disabled = false;
-  reloadBtn.disabled = false;
   deleteBtn.disabled = false;
-  keepBtn.disabled = false;
+  saveBtn.disabled = false;
+  resetBtn.disabled = false;
+
+  titleInput.focus();
 }
 
 export function updatePreview(): void {
-  if (!bookmark.activeBookmark) {
-    disableControls();
+  if (!bookmarks.activeBookmark) {
+    disablePreview();
     return;
   }
 
-  enableControls();
+  enablePreview();
 
-  iframe.src = bookmark.activeBookmark.url;
-  titleInput.value = bookmark.activeBookmark.title;
-  urlInput.value = bookmark.activeBookmark.url;
+  titleInput.value = bookmarks.activeBookmark.title;
+  urlInput.value = bookmarks.activeBookmark.url;
+  iframe.src = bookmarks.activeBookmark.url;
 }

@@ -7,7 +7,6 @@
       name="description"
       content="A single-page web app to sort your bookmarks. No installation. Fully local."
     />
-
     <link
       rel="apple-touch-icon"
       sizes="180x180"
@@ -26,165 +25,74 @@
       href="assets/favicon-16x16.png"
     />
     <link rel="manifest" href="assets/site.webmanifest" />
-
-    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/index.css" />
+    <script src="scripts/app.ts"></script>
     <title>Bookmarks</title>
   </head>
   <body>
-    <section class="overlay section-start">
-      <div>
-        <h2>Bookmarks</h2>
-
-        <input type="file" class="file-input" id="start-input-file" />
-        <label class="file-input-label" for="start-input-file">
-          Import bookmarks from HTML
-        </label>
-
-        <button class="outline" id="start-btn-skip">
-          Skip to the editor ➤
-        </button>
-      </div>
-    </section>
-
-    <section class="overlay section-settings" style="display: none">
-      <div>
-        <header>
-          <span>Settings</span>
-          <button class="danger text" id="settings-btn-close">✖</button>
-        </header>
-        <div class="settings-reset-btn-container">
-          <button id="settings-btn-reset">Reset keybinds</button>
-        </div>
-        <main></main>
-      </div>
-    </section>
-
     <header>
-      <menu></menu>
-      <button class="text small" id="header-btn-settings">Settings</button>
+      <span>✦</span>
     </header>
-
     <main>
-      <section class="panel panel-input">
-        <div>
-          <input type="file" class="file-input" id="input-input-file" />
-          <label class="file-input-label" for="input-input-file">
-            Import bookmarks from HTML
-          </label>
-        </div>
-
-        <menu class="entry-group-menu" id="input-entry-menu"></menu>
+      <section class="input">
+        <label class="file">
+          Import bookmarks from HTML
+          <input type="file" />
+        </label>
+        <menu is="c-root-group"></menu>
       </section>
-
-      <section class="panel panel-preview">
-        <div class="preview-controls">
+      <section class="preview">
+        <form action="javascript:void(0);">
+          <label>
+            Bookmark title
+            <input type="text" name="title" disabled />
+          </label>
+          <label>
+            Bookmark URL
+            <input type="text" name="url" disabled />
+          </label>
           <div>
-            <input
-              type="text"
-              placeholder="Bookmark title"
-              id="preview-input-title"
-              value=""
-              disabled
-            />
-            <button class="outline" id="preview-btn-reset-title" disabled>
-              Reset title
+            <button type="reset" class="secondary" id="preview-reset" disabled>
+              Reset
             </button>
-          </div>
-          <div>
-            <input
-              type="text"
-              placeholder="Bookmark URL"
-              id="preview-input-url"
-              value=""
-              disabled
-            />
-            <button class="outline" id="preview-btn-reset-url" disabled>
-              Reset URL
-            </button>
-          </div>
-          <div class="preview-control-buttons">
             <div>
-              <button class="outline" id="preview-btn-reload" disabled>
-                Reload
-              </button>
-              <button class="outline" id="preview-btn-new-tab" disabled>
-                Open in new tab
-              </button>
-            </div>
-            <div>
-              <button class="danger outline" id="preview-btn-delete" disabled>
+              <button type="button" class="danger" id="preview-delete" disabled>
                 Delete
               </button>
-              <button id="preview-btn-keep" disabled>Keep</button>
+              <button type="submit" class="primary" id="preview-save" disabled>
+                Save
+              </button>
             </div>
           </div>
-        </div>
-        <div class="preview-iframe-container">
-          <iframe
-            id="preview-iframe"
-            frameborder="0"
-            src="about:blank"
-            title="Bookmark preview"
-          ></iframe>
-        </div>
+        </form>
+        <iframe src="about:blank" title="Bookmark preview"></iframe>
       </section>
-
-      <section class="panel panel-output">
-        <div class="output-controls">
-          <div>
-            <button class="outline" id="output-btn-create-group">
-              Create group
-            </button>
-            <button id="output-btn-export">Export as HTML</button>
-          </div>
-          <input
-            type="text"
-            id="output-input-title"
-            placeholder="Group title"
-            value=""
-            disabled
-          />
+      <section class="output">
+        <div>
+          <button id="output-export">Export as HTML</button>
+          <button class="secondary" id="output-create-group">
+            Create group
+          </button>
+          <label>
+            Root
+            <input type="radio" name="active-group" id="output-radio" checked />
+          </label>
         </div>
-        <div class="output-radio-container">
-          <label for="output-radio">Root</label>
-          <input type="radio" name="active-group" id="output-radio" checked />
-        </div>
-        <menu class="entry-group-menu" id="output-entry-menu"></menu>
+        <menu is="c-root-group" data-radio="output-radio"></menu>
       </section>
     </main>
-
-    <template id="template-keybind-btn">
-      <div>
-        <span slot="name"></span>
-        <button class="text" slot="action"></button>
-      </div>
-    </template>
-
-    <template id="template-bookmark-entry">
-      <li class="entry-bookmark">
-        <button>
-          <img alt="" slot="icon" width="28px" height="28px" />
-
-          <div>
-            <span slot="title"></span>
-            <span slot="url"></span>
-          </div>
-        </button>
-      </li>
-    </template>
-
-    <template id="template-group-entry">
-      <li class="entry-group">
-        <details>
-          <summary>
-            <span slot="title"></span>
-            <input type="radio" name="active-group" slot="radio" />
-          </summary>
-          <menu slot="children" class="entry-group-menu"></menu>
-        </details>
-      </li>
-    </template>
-
-    <script src="scripts/app.ts"></script>
   </body>
+  <template id="template-bookmark">
+    <img width="28" height="28" />
+    <div>
+      <span slot="title"></span>
+      <span slot="url"></span>
+    </div>
+  </template>
+  <template id="template-group">
+    <summary>
+      <span slot="title"></span>
+      <input type="radio" name="active-group" />
+    </summary>
+  </template>
 </html>

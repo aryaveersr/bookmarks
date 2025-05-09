@@ -3,8 +3,30 @@ header {
 
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
 
-  padding: 8px;
+  padding: 8px 16px;
+  gap: 2rem;
+}
+
+header button {
+  color: white;
+  border-color: transparent;
+  background-color: transparent;
+
+  padding: 4px 12px;
+}
+
+header button:hover {
+  border-color: var(--gray-800);
+  background-color: var(--gray-800);
+}
+
+header span {
+  margin-top: -2px;
+}
+
+header nav {
+  padding-left: 0px;
 }
